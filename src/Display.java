@@ -112,9 +112,12 @@ public class Display extends JFrame {
 
         // use pack to size the window appropriately (or can be manually set).
         frame.pack();
-
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         // display the window
         frame.setVisible(true);
+
+
+
 
         timer.start();
     }
