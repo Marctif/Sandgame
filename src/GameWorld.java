@@ -258,4 +258,9 @@ public class GameWorld
         penElement = type;
     }
 
+    public void test()
+    {
+        
+    }
+
 }
