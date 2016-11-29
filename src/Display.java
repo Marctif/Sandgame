@@ -59,9 +59,13 @@ public class Display extends JFrame {
         JMenuItem menuItem2 = new JMenuItem("Quit");
         JMenuItem menuItem3 = new JMenuItem("Sand");
         JMenuItem menuItem4 = new JMenuItem("Wall");
+        JMenuItem menuItem5 = new JMenuItem("Water");
+        JMenuItem menuItem6 = new JMenuItem("Plant");
         menu.add(menuItem2);
         menu.add(menuItem3);
         menu.add(menuItem4);
+        menu.add(menuItem5);
+        menu.add(menuItem6);
 
         // https://stackoverflow.com/questions/9778621/how-to-make-a-jmenu-item-do-something-when-its-clicked
         // for making a menu do something when clicked
@@ -88,16 +92,22 @@ public class Display extends JFrame {
         menuItem3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 sm.gameWorld.changePenType("Sand");
-
             }
-
         });
         menuItem4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 sm.gameWorld.changePenType("Wall");
-
             }
-
+        });
+        menuItem5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                sm.gameWorld.changePenType("Water");
+            }
+        });
+        menuItem6.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                sm.gameWorld.changePenType("Plant");
+            }
         });
 
 
@@ -107,7 +117,7 @@ public class Display extends JFrame {
         frame.add(sm);
 
         //Timer for repetitive updating
-        int timeSlice = 50;  // updates the every assigned number of milliseconds
+        int timeSlice = 100;  // updates the every assigned number of milliseconds
         Timer timer = new Timer(timeSlice,  (e) -> sm.repaint());
 
         // use pack to size the window appropriately (or can be manually set).
@@ -225,7 +235,20 @@ class sqFrame extends Canvas implements MouseListener, MouseMotionListener{
         else if(!gameWorld.penDragMode)
         {
             Point pos = e.getPoint();
-            gameWorld.mouseClicked(pos.x/4, pos.y/4);
+            int posx = pos.x/4;
+            int posy = pos.y/4;
+            gameWorld.mouseClicked(posx, posy);
+            gameWorld.mouseClicked(posx + 1, posy);
+            gameWorld.mouseClicked(posx, posy + 1);
+            gameWorld.mouseClicked(posx + 1, posy + 1);
+
+            gameWorld.mouseClicked(posx - 1, posy);
+            gameWorld.mouseClicked(posx, posy - 1);
+            gameWorld.mouseClicked(posx - 1, posy - 1);
+
+            gameWorld.mouseClicked(posx - 1, posy + 1);
+            gameWorld.mouseClicked(posx + 1, posy - 1);
+
             System.out.println("Clicked: " + pos.x/4 + " " + pos.y/4);
             System.out.println(gameWorld.pixelMap[pos.x/4][pos.y/4].name);
             //gameWorld.mouseWasClicked = false;
@@ -274,10 +297,26 @@ class sqFrame extends Canvas implements MouseListener, MouseMotionListener{
 
         m_circle = circle;
         Point pixel = e.getPoint();
-        //dragPointQueue.add(pixel);
-        //System.out.print(pixel.getX());
+
         if(pixel.x/4 < xWindow && pixel.x/4 > 0 && pixel.y/4 < yWindow && pixel.y/4 > 0)
-            gameWorld.mouseClicked(pixel.x/4,pixel.y/4);
+        {
+            int posx = pixel.x/4;
+            int posy = pixel.y/4;
+
+            gameWorld.mouseClicked(posx, posy);
+            /*gameWorld.mouseClicked(posx + 1, posy);
+            gameWorld.mouseClicked(posx, posy + 1);
+            gameWorld.mouseClicked(posx + 1, posy + 1);
+
+            gameWorld.mouseClicked(posx - 1, posy);
+            gameWorld.mouseClicked(posx, posy - 1);
+            gameWorld.mouseClicked(posx - 1, posy - 1);
+
+            gameWorld.mouseClicked(posx - 1, posy + 1);
+            gameWorld.mouseClicked(posx + 1, posy - 1);
+            */
+
+        }
     }
 
 

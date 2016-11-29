@@ -22,7 +22,8 @@ public class GameWorld
     //Associates an element name with an array index.
     //Determines name of particle on pixelMap where
     //pixelMap's stored integer represents an index in the pixelType array
-    final int ELEMENT_COUNT = 3;
+    final int ELEMENT_COUNT = 5;
+
     String[] pixelNameList = new String[ELEMENT_COUNT];
 
     //Boolean variables to keep track of mouse operations by user
@@ -40,7 +41,7 @@ public class GameWorld
     public GameWorld()
     {
         //Initializes pixelMap with "Nothing" in all indices
-        pixelMap = new Particle[PIXEL_MAP_WIDTH][PIXEL_MAP_HEIGHT];
+        pixelMap = new Particle[PIXEL_MAP_WIDTH  ][PIXEL_MAP_HEIGHT ];
         existingParticles = new ArrayList<Particle>();
         for(int iY = PIXEL_MAP_HEIGHT-1; iY >= 0; iY--){
             for(int iX = 0; iX < PIXEL_MAP_WIDTH; iX++){
@@ -52,6 +53,8 @@ public class GameWorld
         pixelNameList[0] = "Nothing";
         pixelNameList[1] = "Sand";//Completely unreactive non-static particle
         pixelNameList[2] = "Wall";//Completely unreactive static paticle
+        pixelNameList[3] = "Water";//flowing particle that reacts with plant
+        pixelNameList[4] = "Plant";//Seed that will drop then grow on contact to water
 
         //Initializes mouse variables
         mouseWasClicked = false;
@@ -81,7 +84,7 @@ public class GameWorld
                 }
             }
         }
-       /* for(Particle p : existingParticles)
+        /*for(Particle p : existingParticles)
         {
             updatePixel(p);
             if(!wallCollision && (p.x == 0 || p.y == 0 || p.x == PIXEL_MAP_WIDTH-1 || p.y == PIXEL_MAP_HEIGHT-1))
@@ -108,7 +111,7 @@ public class GameWorld
                     //If there's nothing in the target spot, replace it with sand
                     if(pixelMap[clickedX][clickedY].name.equals("Nothing"))
                     {
-                        Particle p =  new Particle("Sand", Color.lightGray, false, clickedX, clickedY);
+                        Particle p =  new Particle("Sand", Color.ORANGE, false, clickedX, clickedY);
                         pixelMap[clickedX][clickedY] = p;
                         existingParticles.add(p);
                     }
@@ -122,8 +125,26 @@ public class GameWorld
                         existingParticles.add(p);
                     }
                     break;
+                case "Water":
+                    //If there's nothing in the target spot, replace it with wall
+                    if(pixelMap[clickedX][clickedY].name.equals("Nothing"))
+                    {
+                        Particle p =  new Particle("Water", Color.blue, false, clickedX, clickedY);
+                        pixelMap[clickedX][clickedY] = p;
+                        existingParticles.add(p);
+                    }
+                    break;
+                case "Plant":
+                    //If there's nothing in the target spot, replace it with wall
+                    if(pixelMap[clickedX][clickedY].name.equals("Nothing"))
+                    {
+                        Particle p =  new Particle("Plant", Color.green, false, clickedX, clickedY);
+                        pixelMap[clickedX][clickedY] = p;
+                        existingParticles.add(p);
+                    }
+                    break;
             }
-
+            mouseWasClicked = false;
 
         }
     }
@@ -132,6 +153,8 @@ public class GameWorld
     //only considers pixel spaces below the given particle
     public void updatePixel(Particle thisPixel){
         //Change nothing if there's nothing in the pixel space
+        if(thisPixel.y + 1 >= 200)
+            return;
         if(thisPixel.name.equals("Nothing"))
         {
             return;
@@ -142,7 +165,7 @@ public class GameWorld
             return;
         }
         //Moves particle 1 pixel downward if there's nothing in the pixel space below and the particle is not at the bottom of the screen
-        else if(pixelMap[thisPixel.x][thisPixel.y+1].name.equals("Nothing") && thisPixel.y+1 < PIXEL_MAP_HEIGHT-1){
+        else if(pixelMap[thisPixel.x][thisPixel.y + 1].name.equals("Nothing") && thisPixel.y+1 < PIXEL_MAP_HEIGHT-1){
             pixelMap[thisPixel.x][thisPixel.y+1] = pixelMap[thisPixel.x][thisPixel.y];
             pixelMap[thisPixel.x][thisPixel.y] = new Particle(thisPixel.x, thisPixel.y);
             pixelMap[thisPixel.x][thisPixel.y+1].y++;
@@ -241,6 +264,7 @@ public class GameWorld
         clickedX = x;
         clickedY = y;
         mouseWasClicked = true;
+        update();
     }
 
     //Called by Display when the mouse was dragged at a specific location on the pixel map
@@ -260,7 +284,7 @@ public class GameWorld
 
     public void test()
     {
-        
+
     }
 
 }
