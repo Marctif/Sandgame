@@ -164,8 +164,10 @@ public class GameWorld
         {
             return;
         }
+
+
         //Moves particle 1 pixel downward if there's nothing in the pixel space below and the particle is not at the bottom of the screen
-        else if(pixelMap[thisPixel.x][thisPixel.y + 1].name.equals("Nothing") && thisPixel.y+1 < PIXEL_MAP_HEIGHT-1){
+        if(pixelMap[thisPixel.x][thisPixel.y + 1].name.equals("Nothing") && thisPixel.y+1 < PIXEL_MAP_HEIGHT-1){
             pixelMap[thisPixel.x][thisPixel.y+1] = pixelMap[thisPixel.x][thisPixel.y];
             pixelMap[thisPixel.x][thisPixel.y] = new Particle(thisPixel.x, thisPixel.y);
             pixelMap[thisPixel.x][thisPixel.y+1].y++;
@@ -236,6 +238,7 @@ public class GameWorld
 
             //If there's no empty space and no reactive elements underneath, no changes should be made to the particle in-question
         }
+        interactionsAroundParticle(thisPixel);
 
 
 
@@ -250,12 +253,81 @@ public class GameWorld
     //Returns true if particleA and particleB can interact with each other
     public boolean canParticleInteract(Particle particleA, Particle particleB)
     {
-        /*if((particleA.name == "1" && particleB.name == "2") || (particleA.name == "2" && particleB.name == "1"))
+        if((particleA.name == "Plant" && particleB.name == "Water") || (particleA.name == "Water" && particleB.name == "1"))
         {
             return true;
         }
-        */
+
         return false;
+    }
+
+    public void interactionsAroundParticle(Particle p)
+    {
+        if(p.name == "Water" )
+        {
+            int posx = p.x;
+            int posy = p.y;
+
+            if(pixelMap[p.x + 1][p.y].name == "Plant")
+            {
+                Particle newP =  new Particle("Plant", Color.green, false, posx, posy);
+                pixelMap[posx][posy] = newP;
+                existingParticles.remove(p);
+                existingParticles.add(newP);
+
+            }
+            if(pixelMap[p.x + 1][p.y + 1].name == "Plant")
+            {
+                Particle newP =  new Particle("Plant", Color.green, false, posx, posy);
+                pixelMap[posx][posy] = newP;
+                existingParticles.remove(p);
+                existingParticles.add(newP);
+            }
+            if(pixelMap[p.x ][p.y + 1].name == "Plant")
+            {
+                Particle newP =  new Particle("Plant", Color.green, false, posx, posy);
+                pixelMap[posx][posy] = newP;
+                existingParticles.remove(p);
+                existingParticles.add(newP);
+            }
+            if(pixelMap[p.x - 1][p.y].name == "Plant")
+            {
+                Particle newP =  new Particle("Plant", Color.green, false, posx, posy);
+                pixelMap[posx][posy] = newP;
+                existingParticles.remove(p);
+                existingParticles.add(newP);
+            }
+            if(pixelMap[p.x - 1][p.y - 1].name == "Plant")
+            {
+                Particle newP =  new Particle("Plant", Color.green, false, posx, posy);
+                pixelMap[posx][posy] = newP;
+                existingParticles.remove(p);
+                existingParticles.add(newP);
+            }
+            if(pixelMap[p.x ][p.y - 1].name == "Plant")
+            {
+                Particle newP =  new Particle("Plant", Color.green, false, posx, posy);
+                pixelMap[posx][posy] = newP;
+                existingParticles.remove(p);
+                existingParticles.add(newP);
+            }
+            if(pixelMap[p.x + 1][p.y - 1].name == "Plant")
+            {
+                Particle newP =  new Particle("Plant", Color.green, false, posx, posy);
+                pixelMap[posx][posy] = newP;
+                existingParticles.remove(p);
+                existingParticles.add(newP);
+            }
+            if(pixelMap[p.x - 1][p.y + 1].name == "Plant")
+            {
+                Particle newP =  new Particle("Plant", Color.green, false, posx, posy);
+                pixelMap[posx][posy] = newP;
+                existingParticles.remove(p);
+                existingParticles.add(newP);
+
+            }
+
+        }
     }
 
     //Called by Display when the mouse is clicked at a specific location on the pixel map
